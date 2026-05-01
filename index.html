@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Angela 🌹</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6f1;
+    --blush: #e8c4b8;
+    --rose: #c97b6e;
+    --deep: #7a3d35;
+    --text: #2a1a17;
+    --soft: #f0e6df;
+    --gold: #c9a96e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 998;
+    opacity: 0.4;
+  }
+
+  /* ── SCREEN: COUNTDOWN ── */
+  #screen-countdown {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  #screen-countdown.active { display: flex; animation: fadeIn 1.5s ease forwards; }
+
+  .countdown-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(14px, 2.5vw, 20px);
+    color: var(--rose);
+    letter-spacing: 0.2em;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: slideUp 1.5s ease 0.3s forwards;
+  }
+
+  .timer-grid {
+    display: flex;
+    gap: clamp(16px, 4vw, 40px);
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: slideUp 1.5s ease 0.6s forwards;
+  }
+
+  .timer-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .timer-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(52px, 10vw, 110px);
+    color: var(--deep);
+    line-height: 1;
+    min-width: 2ch;
+    text-align: center;
+  }
+
+  .timer-unit {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rose);
+  }
+
+  .timer-sep {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 8vw, 90px);
+    color: var(--blush);
+    line-height: 1;
+    padding-top: 8px;
+  }
+
+  .countdown-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(14px, 2.5vw, 20px);
+    color: #a08880;
+    margin-top: 50px;
+    opacity: 0;
+    animation: slideUp 1.5s ease 0.9s forwards;
+  }
+
+  /* ── SCREEN: BIRTHDAY ── */
+  #screen-birthday {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  #screen-birthday.active { display: flex; animation: fadeIn 2s ease forwards; }
+
+  .petal-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .petal {
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    background: var(--blush);
+    border-radius: 50% 0 50% 0;
+    opacity: 0;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  .bday-top {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(12px, 2vw, 15px);
+    letter-spacing: 0.3em;
+    color: var(--rose);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    animation: slideUp 1.5s ease 0.3s forwards;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .bday-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(60px, 12vw, 120px);
+    line-height: 0.9;
+    color: var(--deep);
+    animation: slideUp 1.5s ease 0.6s forwards;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .bday-name span { font-style: italic; color: var(--rose); }
+
+  .divider {
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    margin: 30px auto;
+    animation: expandLine 1.5s ease 1s forwards;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes expandLine {
+    from { width: 0; opacity: 0; }
+    to { width: 60px; opacity: 1; }
+  }
+
+  .bday-msg {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(18px, 3vw, 24px);
+    color: var(--text);
+    max-width: 500px;
+    line-height: 1.8;
+    animation: slideUp 1.5s ease 1.2s forwards;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .rose-emoji {
+    font-size: 36px;
+    margin: 28px 0 20px;
+    animation: slideUp 1.5s ease 1.5s forwards;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .show-calendar-btn {
+    padding: 16px 44px;
+    border: 1px solid var(--rose);
+    background: transparent;
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--rose);
+    cursor: pointer;
+    transition: all 0.35s;
+    animation: slideUp 1.5s ease 1.8s forwards;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .show-calendar-btn:hover { background: var(--rose); color: white; }
+
+  /* Confetti canvas */
+  #confetti-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 997;
+  }
+
+  /* ── SCREEN: CALENDAR ── */
+  #screen-calendar {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px 80px;
+  }
+  #screen-calendar.active { display: flex; animation: fadeIn 1.5s ease forwards; }
+
+  .back-btn {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--rose);
+    cursor: pointer;
+    margin-bottom: 50px;
+  }
+
+  .cal-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .cal-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 14px;
+  }
+
+  .cal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 7vw, 68px);
+    color: var(--deep);
+    line-height: 1;
+  }
+
+  .cal-title em { font-style: italic; color: var(--rose); }
+
+  .cal-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(14px, 2vw, 18px);
+    color: #8a6560;
+    margin-top: 10px;
+  }
+
+  /* Three gift boxes */
+  .boxes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    max-width: 760px;
+    width: 100%;
+  }
+
+  .gift-box {
+    border: 1px solid var(--blush);
+    background: white;
+    padding: 36px 24px 28px;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gift-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--soft);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.4s ease;
+  }
+
+  .gift-box.unlocked:hover::before { transform: scaleY(1); }
+  .gift-box.unlocked { cursor: pointer; border-color: var(--gold); }
+
+  .box-icon {
+    font-size: 44px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+    display: block;
+  }
+
+  .box-num {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .box-status {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: #a08880;
+    position: relative;
+    z-index: 1;
+  }
+
+  .gift-box.unlocked .box-status { color: var(--deep); }
+
+  /* Code input per box */
+  .box-code-area {
+    margin-top: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .box-code-input {
+    width: 100%;
+    border: 1px solid var(--blush);
+    background: var(--cream);
+    padding: 10px 14px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--text);
+    outline: none;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .box-code-input:focus { border-color: var(--rose); }
+
+  .box-code-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--rose);
+    border: none;
+    color: white;
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .box-code-btn:hover { background: var(--deep); }
+
+  .box-code-error {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 26, 23, 0.65);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--cream);
+    max-width: 480px;
+    width: 100%;
+    padding: 50px 40px;
+    position: relative;
+    animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    border: 1px solid var(--blush);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  @keyframes modalIn {
+    from { transform: scale(0.8) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .modal-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 10px;
+  }
+
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--deep);
+    margin-bottom: 18px;
+    line-height: 1.2;
+  }
+
+  .modal-divider { width: 40px; height: 1px; background: var(--gold); margin-bottom: 20px; }
+
+  .modal-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--text);
+    white-space: pre-line;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--rose);
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+  }
+
+  /* Loading */
+  #loading {
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: opacity 1s ease;
+  }
+
+  #loading.hidden { opacity: 0; pointer-events: none; }
+
+  .loading-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--rose);
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div id="loading"><div class="loading-text">for you, blob.</div></div>
+
+<!-- COUNTDOWN -->
+<div id="screen-countdown">
+  <div class="countdown-label">counting down to something special</div>
+  <div class="timer-grid">
+    <div class="timer-block"><div class="timer-num" id="t-days">00</div><div class="timer-unit">days</div></div>
+    <div class="timer-sep">:</div>
+    <div class="timer-block"><div class="timer-num" id="t-hours">00</div><div class="timer-unit">hours</div></div>
+    <div class="timer-sep">:</div>
+    <div class="timer-block"><div class="timer-num" id="t-mins">00</div><div class="timer-unit">minutes</div></div>
+    <div class="timer-sep">:</div>
+    <div class="timer-block"><div class="timer-num" id="t-secs">00</div><div class="timer-unit">seconds</div></div>
+  </div>
+  <div class="countdown-name">for angelaaa ~ 2nd may 2026</div>
+</div>
+
+<!-- BIRTHDAY -->
+<div id="screen-birthday">
+  <div class="petal-bg" id="petalBg"></div>
+  <div class="bday-top">2nd May 2026 · Your Day</div>
+  <div class="bday-name">Happy<br><span>Birthday</span><br>Blob.</div>
+  <div class="divider"></div>
+  <div class="bday-msg">
+    Twenty years of you in this world.<br>
+    Today is entirely, completely yours.
+  </div>
+  <div class="rose-emoji">🌹</div>
+  <button class="show-calendar-btn" onclick="showCalendar()">open your gifts →</button>
+</div>
+
+<!-- CALENDAR / GIFT BOXES -->
+<div id="screen-calendar">
+  <button class="back-btn" onclick="showBirthday()">← back</button>
+  <div class="cal-header">
+    <div class="cal-eyebrow">For you, with love</div>
+    <div class="cal-title">Three little<br><em>surprises</em></div>
+    <div class="cal-sub">Each one unlocks with a secret code. You'll know when you know.</div>
+  </div>
+
+  <div class="boxes-grid" id="boxesGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-eyebrow" id="modalEyebrow"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-divider"></div>
+    <div class="modal-text" id="modalText"></div>
+  </div>
+</div>
+
+<script>
+  // ═══════════════════════════════════════════════════════
+  // ▶ CONFIGURATION — edit this to test the timer
+  // ═══════════════════════════════════════════════════════
+  // To test locally, change TARGET_DATE to a few seconds from now.
+  // Example: new Date(Date.now() + 10000)  ← 10 seconds from now
+  // For production, set to: new Date('2026-05-02T00:00:00')
+  const TARGET_DATE = new Date('2026-05-02T00:00:00');
+  // ═══════════════════════════════════════════════════════
+
+  // ═══════════════════════════════════════════════════════
+  // ▶ GIFT BOX CONTENT — edit titles, text, icons here
+  // ═══════════════════════════════════════════════════════
+  const boxes = [
+    {
+      code: 'CHICKENWRAPS',
+      icon: '🥳',
+      label: '#1',
+      lockedStatus: 'enter the code to unlock',
+      unlockedStatus: 'tap to open',
+      title: '#1',
+      eyebrow: 'For you',
+      text: 'Happy Birthday Blob!! I love you so much. When you\'re reading this, I\'m hoping you had lots of fun with your friends and loved the surprise. You\'re TWENTY Years OLD. Thats so insane. TWO DECADES. your age is gonna start with a 2. Crazy. I love you so much, I want you to have so much fun today and I pray that God blesses you in every moment of your life. And I hope you\'re having funn with this code game hehe'
+    },
+    {
+      code: 'ILOVEFLOWERSLITERALLY',
+      icon: '🤔',
+      label: '#2',
+      lockedStatus: 'enter the code to unlock',
+      unlockedStatus: 'tap to open',
+      title: '#2',
+      eyebrow: 'For you',
+      text: "Hii!! So the Amazon package finally arrrived. And I really hope you love it!\nHere\'s TWENTY reasons why i got it for you.\n1. You love puzzles, so I knew this would be something you’d genuinely enjoy.\n2. A 1000-piece puzzle is the perfect challenge for you.\n3. It’s something relaxing you can do whenever you need a break.\n4. It helps you unwind and clear your mind after a long day.\n5. I thought you’d enjoy the satisfaction of completing something piece by piece.\n6. It’s something you can take your time with, no rush at all.\n7. Every piece you place is a small win, and I love that for you.\n8. It’s a cozy activity you can do on your own or with me.\n9. You can tape it when you're done and add it as the first puzzle in your collection.\n10. It’s something that keeps you engaged in a fun way.\n11. You’ll feel proud when you finally complete it.\n12. It’s not just a gift, it’s an experience.\n13. It’s something different from the usual gifts.\n14. It gives you a reason to slow down and enjoy the moment.\n15. I picked it thinking about what would make you happy.\n16. It’s something you can come back to anytime.\n17. It’s a little reminder of me while you’re working on it.\n18. It turns quiet time into something meaningful.\n19. I wanted to give you something that matches your interests perfectly.\n20. And honestly… I just wanted to see you smile while solving it."
+    },
+    {
+      code: 'ILOVEBEINGABLOB',
+      icon: '👀',
+      label: '#3',
+      lockedStatus: 'enter the code to unlock',
+      unlockedStatus: 'tap to open',
+      title: '#3',
+      eyebrow: 'For you',
+      text: "So it has finally arrived!! I love you so much and here's 20 reasons why I got this for you.\n1. You love lipsticks, so I knew this would mean something to you.\n2. It’s a shade I honestly think would look amazing on you.\n3. It’s a shade which idt you have\n4. You don’t need the extra step of putting gloss, it already has that shine built in.\n5. It’s hydrating, so your lips stay soft and comfortable.\n6. Every time you wear it, you’ll think of me.\n7. I want you to feel special every time you put it on.\n8. It’s one of your first designer pieces, and you deserve that.\n9. It’s from Dior… and you’re Christian too, so Christian Dior\n10. I know you’ll feel more confident wearing it.\n11. It’s engraved with your name, so it’s truly yours.\n12. It’s something you can keep forever, so it’s priceless.\n13. It’s refillable, so we can pick new shades together next time.\n14. It’s something different from what you already have.\n15. The whole packaging is an experience, not just a product.\n16. I wanted to give you something that feels as special as you are.\n17. It’s something you can carry with you every day.\n18. I thought about you the whole time while choosing it.\n19. It’s a small way to remind you how beautiful you are.\n20. And honestly… I just wanted to make you smile."
+    }
+  ];
+  // ═══════════════════════════════════════════════════════
+
+  // In-memory unlock state — resets on page refresh
+  const unlockedState = [false, false, false];
+
+  function isBoxUnlocked(i) { return unlockedState[i]; }
+  function setBoxUnlocked(i) { unlockedState[i] = true; }
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  let timerInterval = null;
+  let confettiAnimFrame = null;
+  let birthdayTriggered = false;
+
+  function updateTimer() {
+    const now = new Date();
+    const diff = TARGET_DATE - now;
+
+    if (diff <= 0 && !birthdayTriggered) {
+      birthdayTriggered = true;
+      clearInterval(timerInterval);
+      showBirthday();
+      launchConfetti();
+      return;
+    }
+
+    if (diff > 0) {
+      const days  = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins  = Math.floor((diff % 3600000) / 60000);
+      const secs  = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById('t-days').textContent  = pad(days);
+      document.getElementById('t-hours').textContent = pad(hours);
+      document.getElementById('t-mins').textContent  = pad(mins);
+      document.getElementById('t-secs').textContent  = pad(secs);
+    }
+  }
+
+  // ── Confetti ──
+  function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ['#e8c4b8','#c97b6e','#c9a96e','#7a3d35','#f0e6df','#e8a090'];
+    const pieces = Array.from({length: 160}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: 4 + Math.random() * 6,
+      d: 1.5 + Math.random() * 2.5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 10 - 5,
+      tiltAngle: 0,
+      tiltSpeed: 0.08 + Math.random() * 0.05
+    }));
+
+    let frame = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        ctx.beginPath();
+        ctx.lineWidth = p.r / 2;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 4, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 4);
+        ctx.stroke();
+
+        p.y += p.d;
+        p.tiltAngle += p.tiltSpeed;
+        p.tilt = Math.sin(p.tiltAngle) * 12;
+
+        if (p.y > canvas.height) {
+          p.y = -10;
+          p.x = Math.random() * canvas.width;
+        }
+      });
+      frame++;
+      if (frame < 400) confettiAnimFrame = requestAnimationFrame(draw);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    draw();
+  }
+
+  // ── Petals ──
+  function createPetals() {
+    const c = document.getElementById('petalBg');
+    c.innerHTML = '';
+    for (let i = 0; i < 16; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (5 + Math.random() * 6) + 's';
+      p.style.animationDelay = (Math.random() * 8) + 's';
+      c.appendChild(p);
+    }
+  }
+
+  // ── Screen transitions ──
+  function showScreen(id) {
+    ['screen-countdown','screen-birthday','screen-calendar'].forEach(s => {
+      document.getElementById(s).classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+  }
+
+  function showCountdown() { showScreen('screen-countdown'); }
+
+  function showBirthday() {
+    showScreen('screen-birthday');
+    createPetals();
+  }
+
+  function showCalendar() {
+    showScreen('screen-calendar');
+    buildBoxes();
+  }
+
+  // ── Gift boxes ──
+  function buildBoxes() {
+    const grid = document.getElementById('boxesGrid');
+    grid.innerHTML = '';
+
+    boxes.forEach((box, i) => {
+      const unlocked = isBoxUnlocked(i);
+      const card = document.createElement('div');
+      card.className = 'gift-box' + (unlocked ? ' unlocked' : '');
+      card.id = 'box-' + i;
+
+      card.innerHTML = `
+        <span class="box-icon">${box.icon}</span>
+        <div class="box-num">${box.label}</div>
+        <div class="box-status">${unlocked ? box.unlockedStatus : box.lockedStatus}</div>
+        ${unlocked ? '' : `
+          <div class="box-code-area">
+            <input class="box-code-input" id="code-input-${i}" type="text" placeholder="enter code" maxlength="30" />
+            <button class="box-code-btn" onclick="checkBoxCode(${i})">unlock</button>
+            <div class="box-code-error" id="code-error-${i}">not quite right 🌹</div>
+          </div>
+        `}
+      `;
+
+      if (unlocked) {
+        card.addEventListener('click', () => openModal(i));
+      } else {
+        const input = card.querySelector('.box-code-input');
+        if (input) {
+          input.addEventListener('keydown', e => { if (e.key === 'Enter') checkBoxCode(i); });
+        }
+      }
+
+      grid.appendChild(card);
+    });
+  }
+
+  function checkBoxCode(i) {
+    const input = document.getElementById('code-input-' + i);
+    const error = document.getElementById('code-error-' + i);
+    if (!input) return;
+
+    if (input.value.trim().toUpperCase() === boxes[i].code) {
+      setBoxUnlocked(i);
+      error.style.display = 'none';
+      buildBoxes();
+    } else {
+      error.style.display = 'block';
+    }
+  }
+
+  function openModal(i) {
+    const box = boxes[i];
+    document.getElementById('modalEyebrow').textContent = box.eyebrow;
+    document.getElementById('modalTitle').textContent = box.title;
+    document.getElementById('modalText').textContent = box.text;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ── Init ──
+  function init() {
+    setTimeout(() => {
+      document.getElementById('loading').classList.add('hidden');
+
+      const now = new Date();
+      if (now >= TARGET_DATE) {
+        birthdayTriggered = true;
+        showBirthday();
+        launchConfetti();
+      } else {
+        showCountdown();
+        updateTimer();
+        timerInterval = setInterval(updateTimer, 1000);
+      }
+    }, 1600);
+  }
+
+  window.addEventListener('resize', () => {
+    const canvas = document.getElementById('confetti-canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  init();
+</script>
+</body>
+</html>
