@@ -303,7 +303,7 @@
   /* Three gift boxes */
   .boxes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     max-width: 760px;
     width: 100%;
@@ -328,6 +328,9 @@
     transform-origin: bottom;
     transition: transform 0.4s ease;
   }
+  .gift-box:nth-child(4) {
+  grid-column: 2;
+}
 
   .gift-box.unlocked:hover::before { transform: scaleY(1); }
   .gift-box.unlocked { cursor: pointer; border-color: var(--gold); }
@@ -532,7 +535,7 @@
     <div class="timer-sep">:</div>
     <div class="timer-block"><div class="timer-num" id="t-secs">00</div><div class="timer-unit">seconds</div></div>
   </div>
-  <div class="countdown-name">for angelaaa ~ 2nd may 2026</div>
+  <div class="countdown-name">for my blob ~ 2nd may 2026</div>
 </div>
 
 <!-- BIRTHDAY -->
@@ -554,7 +557,7 @@
   <button class="back-btn" onclick="showBirthday()">← back</button>
   <div class="cal-header">
     <div class="cal-eyebrow">For you, with love</div>
-    <div class="cal-title">Three little<br><em>surprises</em></div>
+    <div class="cal-title">A few little<br><em>surprises</em></div>
     <div class="cal-sub">Each one unlocks with a secret code. You'll know when you know.</div>
   </div>
 
@@ -586,33 +589,43 @@
   // ▶ GIFT BOX CONTENT — edit titles, text, icons here
   // ═══════════════════════════════════════════════════════
   const boxes = [
-    {
-      code: 'CHICKENWRAPS',
+      {
+      code: 'PRETTYPENGUIN',
       icon: '🥳',
       label: '#1',
       lockedStatus: 'enter the code to unlock',
       unlockedStatus: 'tap to open',
       title: '#1',
       eyebrow: 'For you',
-      text: 'Happy Birthday Blob!! I love you so much. When you\'re reading this, I\'m hoping you had lots of fun with your friends and loved the surprise. You\'re TWENTY Years OLD. Thats so insane. TWO DECADES. your age is gonna start with a 2. Crazy. I love you so much, I want you to have so much fun today and I pray that God blesses you in every moment of your life. And I hope you\'re having funn with this code game hehe'
-    },
-    {
-      code: 'ILOVEFLOWERSLITERALLY',
-      icon: '🤔',
+      text: "Happy Birthday Blob!! I love you so so much. If you are reading this, then the surprise at 12 must have been amazing and you definitely figured out the code word by now. I cannot believe it is your dayyy. You deserve all the happiness, all the laughter, and so much cake. HAPPY BIRTHDAY BLOBB!!! I really really love you. Do not ever forget that. Now go enjoy every second of today and eat extra cake for me\n PS: i love you ;)"
+      },
+      {
+      code: 'CHICKENWRAPS',
+      icon: '😍',
       label: '#2',
       lockedStatus: 'enter the code to unlock',
       unlockedStatus: 'tap to open',
       title: '#2',
       eyebrow: 'For you',
-      text: "Hii!! So the Amazon package finally arrrived. And I really hope you love it!\nHere\'s TWENTY reasons why i got it for you.\n1. You love puzzles, so I knew this would be something you’d genuinely enjoy.\n2. A 1000-piece puzzle is the perfect challenge for you.\n3. It’s something relaxing you can do whenever you need a break.\n4. It helps you unwind and clear your mind after a long day.\n5. I thought you’d enjoy the satisfaction of completing something piece by piece.\n6. It’s something you can take your time with, no rush at all.\n7. Every piece you place is a small win, and I love that for you.\n8. It’s a cozy activity you can do on your own or with me.\n9. You can tape it when you're done and add it as the first puzzle in your collection.\n10. It’s something that keeps you engaged in a fun way.\n11. You’ll feel proud when you finally complete it.\n12. It’s not just a gift, it’s an experience.\n13. It’s something different from the usual gifts.\n14. It gives you a reason to slow down and enjoy the moment.\n15. I picked it thinking about what would make you happy.\n16. It’s something you can come back to anytime.\n17. It’s a little reminder of me while you’re working on it.\n18. It turns quiet time into something meaningful.\n19. I wanted to give you something that matches your interests perfectly.\n20. And honestly… I just wanted to see you smile while solving it."
+      text: 'Happy Birthday Blob!! I love you so much. When you\'re reading this, I\'m hoping you had lots of fun with your friends and loved the surprise. You\'re TWENTY Years OLD. Thats so insane. TWO DECADES. your age is gonna start with a 2. Crazy. I love you so much, I want you to have so much fun today and I pray that God blesses you in every moment of your life. And I hope you\'re having funn with this code game hehe'
     },
     {
-      code: 'ILOVEBEINGABLOB',
-      icon: '👀',
+      code: 'ILOVEFLOWERSLITERALLY',
+      icon: '🤔',
       label: '#3',
       lockedStatus: 'enter the code to unlock',
       unlockedStatus: 'tap to open',
       title: '#3',
+      eyebrow: 'For you',
+      text: "Hii!! So the Amazon package finally arrrived. And I really hope you love it!\nHere\'s TWENTY reasons why i got it for you.\n1. You love puzzles, so I knew this would be something you’d genuinely enjoy.\n2. A 1000-piece puzzle is the perfect challenge for you.\n3. It’s something relaxing you can do whenever you need a break.\n4. It helps you unwind and clear your mind after a long day.\n5. I thought you’d enjoy the satisfaction of completing something piece by piece.\n6. It’s something you can take your time with, no rush at all.\n7. Every piece you place is a small win, and I love that for you.\n8. It’s a cozy activity you can do on your own or with me.\n9. You can tape it when you're done and add it as the first puzzle in your collection.\n10. It’s something that keeps you engaged in a fun way.\n11. You’ll feel proud when you finally complete it.\n12. It’s not just a gift, it’s an experience.\n13. It’s something different from the usual gifts.\n14. It gives you a reason to slow down and enjoy the moment.\n15. I picked it thinking about what would make you happy.\n16. It’s something you can come back to anytime.\n17. It’s a little reminder of me while you’re working on it.\n18. It turns quiet time into something meaningful.\n19. I wanted to give you something that matches your interests perfectly.\n20. And honestly… I just wanted to see you smile while solving it."
+    },
+    {
+      code: 'FRENCHFRILE',
+      icon: '👀',
+      label: '#4',
+      lockedStatus: 'enter the code to unlock',
+      unlockedStatus: 'tap to open',
+      title: '#4',
       eyebrow: 'For you',
       text: "So it has finally arrived!! I love you so much and here's 20 reasons why I got this for you.\n1. You love lipsticks, so I knew this would mean something to you.\n2. It’s a shade I honestly think would look amazing on you.\n3. It’s a shade which idt you have\n4. You don’t need the extra step of putting gloss, it already has that shine built in.\n5. It’s hydrating, so your lips stay soft and comfortable.\n6. Every time you wear it, you’ll think of me.\n7. I want you to feel special every time you put it on.\n8. It’s one of your first designer pieces, and you deserve that.\n9. It’s from Dior… and you’re Christian too, so Christian Dior\n10. I know you’ll feel more confident wearing it.\n11. It’s engraved with your name, so it’s truly yours.\n12. It’s something you can keep forever, so it’s priceless.\n13. It’s refillable, so we can pick new shades together next time.\n14. It’s something different from what you already have.\n15. The whole packaging is an experience, not just a product.\n16. I wanted to give you something that feels as special as you are.\n17. It’s something you can carry with you every day.\n18. I thought about you the whole time while choosing it.\n19. It’s a small way to remind you how beautiful you are.\n20. And honestly… I just wanted to make you smile."
     }
